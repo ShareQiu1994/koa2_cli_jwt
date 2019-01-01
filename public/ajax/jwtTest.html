@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <title>jwtTest</title>
+</head>
+
+<body>
+    <button class="jwtLogin">登录</button>
+    <button class="jwtGetUserInfo">调用接口——获取用户信息</button>
+    <button class="jwtGetInfo">调用接口——获取其他信息</button>
+    
+</body>
+
+</html>
+<script>
+    var token = '';
+    $('.jwtLogin').on('click', () => {
+        $.ajax({
+            url: 'http://localhost:3000/api/login',
+            data: {
+                name: '刘博方'
+            },
+            type: 'post',
+            success: (res) => {
+                if (res.code) {
+                    token= res.token;
+                    alert('获取token成功,token为:' + res.token);
+                } else {
+                    alert('获取token失败')
+                }
+            },
+            error: (err) => {
+                console.log(err);
+                alert(err);
+            }
+        })
+    });
+
+    $('.jwtGetUserInfo').on('click', () => {
+        $.ajax({
+            url: 'http://localhost:3000/api/userInfo',
+            type: 'get',
+            beforeSend:(request)=>{
+                request.setRequestHeader("Authorization",'Bearer '+token);
+            },
+            success: (res) => {
+                alert('请求接口成功:' + JSON.stringify(res));
+            },
+            error: (err) => {
+                console.log(err);
+                alert(err.responseText);
+            }
+        })
+    });
+    
+    
+    $('.jwtGetInfo').on('click', () => {
+        $.ajax({
+            url: 'http://localhost:3000/api/get',
+            type: 'get',
+            beforeSend:(request)=>{
+                request.setRequestHeader("Authorization",'Bearer '+token);
+            },
+            success: (res) => {
+                alert('请求接口成功:' + JSON.stringify(res));
+            },
+            error: (err) => {
+                console.log(err);
+                alert(err.responseText);
+            }
+        })
+    });
+    
+
+</script>
