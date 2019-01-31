@@ -1,14 +1,113 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-	<meta charset="UTF-8">
-	<title>api</title>
-</head>
-<body>
-   <h2>this is a api</h2>
-   <p>这是一个api接口文档</p>
-   <a href="/api/get">新闻增加</a>
-   <a href="/api/update">新闻修改</a>
-   <a href="/api/delete">新闻删除</a>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <title>jwtTest</title>
+  </head>
+
+  <body>
+    <h2>this is a api</h2>
+    <p>这是一个api接口文档</p>
+    <button class="jwtLogin">登录</button>
+    <button class="jwtGetUserInfo">调用接口——获取用户信息</button>
+    <button class="jwtGet">调用接口——获取新闻</button>
+    <button class="jwtUpdate">调用接口——新闻修改</button>
+    <button class="jwtDelete">调用接口——新闻删除</button>
+  </body>
 </html>
+<script>
+  var token = ''
+  $('.jwtLogin').on('click', function() {
+    $.ajax({
+      url: 'http://localhost:3000/api/login',
+      data: {
+        name: '刘博方'
+      },
+      type: 'post',
+      success: function(res) {
+        if (res.code) {
+          $.cookie('token', res.token, { expires: 7 })
+          alert('获取token成功,token为:' + res.token)
+        } else {
+          alert('获取token失败')
+        }
+      },
+      error: function(err) {
+        console.log(err)
+        alert(err)
+      }
+    })
+  })
+
+  $('.jwtGetUserInfo').on('click', function() {
+    $.ajax({
+      url: 'http://localhost:3000/api/userInfo',
+      type: 'get',
+      beforeSend: function(request) {
+        request.setRequestHeader('Authorization', 'Bearer ' + $.cookie('token'))
+      },
+      success: function(res) {
+        alert('请求接口成功:' + JSON.stringify(res))
+      },
+      error: function(err) {
+        console.log(err)
+        alert(err.responseText)
+      }
+    })
+  })
+
+  $('.jwtGet').on('click', function() {
+    $.ajax({
+      url: 'http://localhost:3000/api/get',
+      type: 'get',
+      beforeSend: function(request) {
+        request.setRequestHeader('Authorization', 'Bearer ' + $.cookie('token'))
+      },
+      success: function(res) {
+        alert('请求接口成功:' + JSON.stringify(res))
+      },
+      error: function(err) {
+        console.log(err)
+        alert(err.responseText)
+      }
+    })
+  })
+
+  $('.jwtUpdate').on('click', function() {
+    $.ajax({
+      url: 'http://localhost:3000/api/update',
+      type: 'get',
+      beforeSend: function(request) {
+        request.setRequestHeader('Authorization', 'Bearer ' + $.cookie('token'))
+      },
+      success: function(res) {
+        alert('请求接口成功:' + JSON.stringify(res))
+      },
+      error: function(err) {
+        console.log(err)
+        alert(err.responseText)
+      }
+    })
+  })
+
+  $('.jwtDelete').on('click', function() {
+    $.ajax({
+      url: 'http://localhost:3000/api/delete',
+      type: 'get',
+      beforeSend: function(request) {
+        request.setRequestHeader('Authorization', 'Bearer ' + $.cookie('token'))
+      },
+      success: function(res) {
+        alert('请求接口成功:' + JSON.stringify(res))
+      },
+      error: function(err) {
+        console.log(err)
+        alert(err.responseText)
+      }
+    })
+  })
+</script>

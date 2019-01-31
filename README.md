@@ -1,6 +1,6 @@
 # koa2-cli-jwt
 
-> 一个基于koa2的脚手架后端模板  + jwt验证
+> 一个基于koa2的脚手架(koa-generator)后端模板  + jwt验证
 
 ## Build Setup
 
